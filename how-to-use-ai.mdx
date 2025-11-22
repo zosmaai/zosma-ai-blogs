@@ -1,0 +1,199 @@
+---
+title: "How to Use AI"
+description: "A comprehensive guide on using AI effectively"
+date: "2024-01-15"
+author: "Zosma AI Team"
+authorRole: "AI Engineers"
+image: "/images/blogs/rag-from-extracted-data.jpeg"
+imageAlt: "AI powered customer support agent"
+category: "AI & Machine Learning"
+tags:
+  - AI
+  - Machine Learning
+  - Best Practices
+  - Product Development
+keywords:
+  - AI development
+  - prompt engineering
+  - LLM
+  - machine learning
+  - AI tools
+featured: true
+published: true
+readingTime: "5 min read"
+---
+
+AI is a force multiplier when you approach it systematically. This guide covers choosing the right approach, writing effective prompts, evaluating outputs, safeguarding data, and shipping reliable AI features.
+
+### Understand AI Modalities
+
+- Large language models for reasoning, drafting, planning, and coding.
+- Vision models for image understanding, OCR, and UI analysis.
+- Speech models for transcription and text-to-speech.
+- Embeddings for search, recommendations, clustering, and retrieval.
+- Agents for multi-step workflows with tools and external actions.
+- Fine-tuned models for narrow, consistent tasks.
+
+### Pick the Right Approach
+
+| Approach                             | When to use                                   | Pros                                | Trade-offs                               |
+| ------------------------------------ | --------------------------------------------- | ----------------------------------- | ---------------------------------------- |
+| Retrieval-Augmented Generation (RAG) | Answers must reflect your docs/data           | Fresh, controllable, explainable    | Needs chunking, indexing, and guardrails |
+| Few-shot Prompting                   | You have 3–10 good examples                   | Fast to iterate, no training needed | Sensitive to example quality and order   |
+| Fine-tuning                          | Fixed format, consistent style required       | Higher accuracy for narrow tasks    | Data prep, eval, and versioning overhead |
+| Tool-Use/Agents                      | Requires external actions or multi-step plans | Automates workflows end-to-end      | Orchestration complexity, safety gates   |
+
+### Prompting Essentials
+
+- State the user’s goal, context, constraints, and audience.
+- Specify output format and length. Prefer structured JSON for apps.
+- Provide 1–3 high-quality examples. Keep them short and similar.
+- Ask for uncertainties and missing info.
+- Use iterative prompting: draft → critique → refine.
+
+```md
+System: You are a precise assistant that follows format requirements and calls out uncertainty.
+
+User: Summarize the meeting notes for a busy CTO.
+Constraints: 5 bullet points, action items first, 120 words max, neutral tone.
+If details are missing, add a "Gaps" section.
+
+Output format:
+
+- Action Items:
+- Summary:
+- Gaps:
+```
+
+```json
+{
+  "task": "classify_ticket",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "category": {
+        "type": "string",
+        "enum": ["billing", "bug", "request", "other"]
+      },
+      "priority": { "type": "string", "enum": ["low", "medium", "high"] },
+      "rationale": { "type": "string" }
+    },
+    "required": ["category", "priority", "rationale"],
+    "additionalProperties": false
+  }
+}
+```
+
+### A Simple Working Loop
+
+- Plan: Define success criteria and decision boundaries.
+- Draft: Produce the first output with a constrained prompt.
+- Critique: Ask the model to check for errors against the criteria.
+- Refine: Regenerate with the critique applied.
+- Verify: Run lightweight tests or heuristics before finalizing.
+
+```md
+User: Draft a product FAQ from these docs. Then self-critique for accuracy and clarity, list issues, and produce a corrected final answer. Keep to 200 words.
+```
+
+### Evaluate and Guardrail
+
+- Measure quality with rubrics: correctness, coverage, clarity, citations, and safety.
+- Track latency, cost, and failure modes (refusals, hallucinations, format drift).
+- Add guardrails: schemas, regex checks, profanity filters, allowed tool lists.
+
+```json
+{
+  "rubric": [
+    {"name": "correctness", "scale": 1-5, "definition": "Factually accurate vs provided sources"},
+    {"name": "format", "scale": "pass/fail", "definition": "Matches JSON schema"},
+    {"name": "safety", "scale": "pass/fail", "definition": "No sensitive data leakage"}
+  ],
+  "thresholds": {"correctness": 4, "format": "pass", "safety": "pass"}
+}
+```
+
+### Protect Privacy and Data
+
+- Minimize inputs; redact PII before sending to models.
+- Segment contexts by tenant and role; avoid cross-tenant leakage.
+- Encrypt at rest and in transit; rotate keys; store prompts/outputs securely.
+- Log inputs and outputs with consent and retention policies.
+- Use allowlists for tools and destinations; sandbox side effects.
+
+### Tooling Stack (Practical)
+
+- Orchestration: lightweight functions or chains for prompts, tools, and retries.
+- Retrieval: chunks with semantic search; store embeddings; rerank results.
+- Caching: memoize prompt+context; use semantic cache for common queries.
+- Observability: trace prompts, tokens, costs, latencies, and errors.
+- Versioning: track prompt versions, data snapshots, and model IDs.
+
+```ts
+// Pseudo-TypeScript
+const context = await retrieve({ query, topK: 6, rerank: true });
+const prompt = renderTemplate("answer_with_citations", { query, context });
+
+for (let i = 0; i < 2; i++) {
+  const draft = await model.generate({ prompt, temperature: 0.2 });
+  const critique = await model.generate({
+    prompt: `Check this answer for unsupported claims, missing citations, and json format.\n${draft}`,
+  });
+  if (passes(critique)) return draft;
+  prompt = refine(prompt, critique);
+}
+throw new Error("Failed quality gates");
+```
+
+### Use Cases by Role
+
+- Developers: code explanations, test generation, migration plans, skeleton code, API stubs.
+- Product/PM: user story drafting, PRDs, competitive summaries, roadmap options.
+- Marketing: briefs, outlines, variations, tone adaptation, keyword clustering.
+- Support/Ops: triage, reply drafting, macro suggestions, knowledge base updates.
+
+### Cost and Performance
+
+- Choose smaller models for routine tasks; reserve larger models for complex reasoning.
+- Constrain max tokens; compress context; use summaries and citations over raw dumps.
+- Batch requests when safe; stream outputs for perceived speed.
+- Cache aggressively; deduplicate near-duplicate prompts; store top answers.
+
+### Ethics and Risk
+
+- Identify bias-sensitive domains early; require human-in-the-loop for impact decisions.
+- Attribute sources; avoid implied authority where uncertainty exists.
+- Watermark or label AI-assisted content where appropriate.
+- Provide an escalation path to a human.
+
+### Quick-Start Templates
+
+```md
+Brainstorm: Give 10 diverse ideas for {goal}. For each, add one-liner value, one risk, and a quick next step.
+```
+
+```md
+Summarize: Produce a 120-word neutral summary with 3 action items and 2 follow-up questions.
+```
+
+```md
+Code Review: Identify correctness, security, and performance issues. Suggest minimal diffs only.
+```
+
+```md
+SQL Helper: From the schema and question, produce a safe SQL query. If unknown, ask for the missing table/column.
+```
+
+### Troubleshooting
+
+- Hallucinations: tighten instructions, add retrieval, lower temperature, require citations.
+- Format drift: enforce JSON schema with retries and strict parsing.
+- Inconsistent tone: include a style guide and a short exemplar.
+- High latency: shrink context, enable streaming, choose faster models, precompute embeddings.
+
+### Learning Roadmap
+
+- Week 1: Prompt patterns, output schemas, few-shot design.
+- Week 2: Build a small RAG with chunking, embeddings, reranking, and eval.
+- Week 3: Add tools, caching, and basic guardrails; instrument tracing and cost tracking.
+- Week 4: Run A/B evaluations; tune prompts, chunking, and retrieval thresholds; document runbooks.
