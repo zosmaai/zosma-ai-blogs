@@ -1,2 +1,49 @@
-# Zosma AI Blogs (MDX Content)\n\nThis repository stores blog posts as `.mdx` files. These files are consumed by the Zosma AI website under the Fuma Docs section to render and list blogs.\n\n- **Website integration**: The `zosma-ai-website` project reads these MDX files and indexes their frontmatter to display posts in Fuma Docs → Blogs.\n- **You edit content here**; rendering, routing, and theming are handled in the website repo.\n\n---\n\n## Adding a New Blog Post\n\n1. Create a new `.mdx` file in the repository root (kebab-case filename recommended), for example:\n   - `voice-ai-for-support-teams.mdx`\n2. Start the file with the required frontmatter (see template below).\n3. Write your content in MDX (Markdown + JSX). Use `###` for section headings.\n4. Open a pull request. Once merged, the website will pick up your changes on the next deploy.\n\n### Frontmatter Template\n\n```mdx\n---\ntitle: \"Post Title\"\ndescription: \"Short 1–2 sentence summary\"\ndate: \"YYYY-MM-DD\"             # ISO date\nauthor: \"Zosma AI Team\"\nauthorRole: \"AI Engineers\"\nimage: \"/images/blogs/your-image.jpeg\"\nimageAlt: \"Accessible image description\"\ncategory: \"AI & Machine Learning\"\ntags:\n  - AI\n  - Machine Learning\nkeywords:\n  - ai development\n  - prompt engineering\nfeatured: false                 # true to highlight on listings\npublished: true                 # false to keep as draft\nreadingTime: \"5 min read\"\n---\n\nYour introduction paragraph goes here.\n\n### Section Heading\n\nMain content…\n```\n\n### Field Reference\n\n- **title** (required): Human-readable title.\n- **description** (required): 1–2 sentence teaser shown in lists/social.\n- **date** (required): Publication date in `YYYY-MM-DD`.\n- **author** (required): Display author (e.g., \"Zosma AI Team\").\n- **authorRole** (optional): Display role/title.\n- **image** (recommended): Absolute path to a banner image used on cards and headers (e.g., `/images/blogs/...`).\n- **imageAlt** (recommended): Alt text for accessibility/SEO.\n- **category** (optional): Top-level grouping shown on the site.\n- **tags** (optional): 2–6 short tags; Title Case or lowercase.\n- **keywords** (optional): Additional SEO keywords; lowercase is fine.\n- **featured** (optional): If `true`, may pin or prioritize in lists.\n- **published** (required): Set `false` to keep as draft (hidden from lists).\n- **readingTime** (optional): Friendly reading time label.\n\n> Tip: Keep filenames in kebab-case; in most setups the filename becomes (or informs) the blog slug.\n\n---\n\n## Content Guidelines\n\n- **Structure**: Start with a strong intro, then use clear section headings (`###`) and short paragraphs.\n- **Tone**: Educational, practical, and vendor-neutral where possible.\n- **Tables/Code**: Use standard Markdown tables and fenced code blocks. Prefer small, focused snippets.\n- **Images**:\n  - Use image paths under `/images/blogs/...` that exist in `zosma-ai-website`.\n  - Provide meaningful `imageAlt` text.\n- **Links**: Use descriptive anchor text. Prefer relative/internal links where appropriate.\n- **SEO**: Provide a unique `description`, set `keywords`, and include relevant headings.\n\n---\n\n## Drafts and Publishing\n\n- Set `published: false` to hide a post from listings until it’s ready.\n- Setting `featured: true` may surface the post prominently on the site.\n- Use accurate `date` values to control ordering in listings.\n\n---\n\n## Local Preview\n\nContent is rendered by the website codebase. To preview locally:\n\n1. Ensure your changes are saved in this repo.\n2. In the `zosma-ai-website` repo, start the local dev server (see that repo’s README).\n3. Navigate to the Fuma Docs Blogs section and verify your post renders correctly.\n\n> If images do not display, confirm the referenced path exists in the website’s public/static assets and that the path matches (e.g., `/images/blogs/...`).\n\n---\n\n## Examples in This Repo\n\n- `benefits-of-voice-ai.mdx`\n- `how-to-use-ai.mdx`\n\nUse these as references for structure, frontmatter fields, and tone.\n\n---\n\n## Contributing\n\n- Write clear, actionable titles and descriptions.\n- Keep diffs focused (one post per PR if possible).\n- Run a local preview in `zosma-ai-website` when adding images or tables.\n\n---\n\n## License\n\nCopyright © Zosma AI. All rights reserved.\n*** End Patch``` }```` JSON parsing error: Unexpected token * in JSON at position 1. Please ensure the JSON follows the correct schema. ```，请注意使用正确的 JSON 格式。``` JSON 解析失败: 在位置 1 处遇到意外的符号 *。 请确保 JSON 格式正确。 ``` JSON parse failure. Use the correct JSON schema.  ``` JSON invalid.  ``` JSON format incorrect.  ``` JSON 格式不正确.  ``` JSON 형식이 잘못되었습니다.  ``` JSON không hợp lệ.  ``` JSONフォーマットが正しくありません.  ``` JSON 格式不正確.  ``` JSON 格式非法.  ``` JSON 格式错误.  ``` JSON 格式錯誤.  ``` JSON 형식 오류.  ``` JSON 형식 올바르지 않음.  ``` JSON गलत है.  ``` JSON tidak valid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ``` JSON invalid.  ```
+## Zosma AI Blogs
+
+Content repository for blog posts written in `.mdx`. These files are consumed by the `zosma-ai-website` and shown under Fuma Docs → Blogs.
+
+### Add a new post
+1) Create a new `.mdx` in the repo root (use kebab-case), e.g. `voice-ai-for-support-teams.mdx`.
+2) Paste the frontmatter template below and fill it out.
+3) Write your content using Markdown/MDX (`###` for section headings).
+4) Commit and push. The website will pick it up on the next deploy.
+
+### Frontmatter template
+
+```mdx
+---
+title: "Post Title"
+description: "Short 1–2 sentence summary"
+date: "YYYY-MM-DD"
+author: "Zosma AI Team"
+authorRole: "AI Engineers"
+image: "/images/blogs/your-image.jpeg"
+imageAlt: "Accessible image description"
+category: "AI & Machine Learning"
+tags:
+  - AI
+  - Machine Learning
+keywords:
+  - ai development
+  - prompt engineering
+  - llm
+  - machine learning
+  - ai tools
+featured: false
+published: true
+readingTime: "5 min read"
+---
+```
+
+### Notes
+- Use images that exist in the website repo under `/images/blogs/...`, and set meaningful `imageAlt`.
+- Control visibility/order with:
+  - `published: false` → hide from listings (draft)
+  - `featured: true` → may be highlighted in listings
+  - `date` (YYYY-MM-DD) → used for sorting
+
+### Examples in this repo
+- `benefits-of-voice-ai.mdx`
+- `how-to-use-ai.mdx`
+
 
